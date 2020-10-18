@@ -14,12 +14,14 @@
         lblCAComponents.Text = "CA Components: Test:" & Test_percentage * 100 & "%, Quiz:" & Quiz_percentage * 100 & "%, Project:" _
                                 & Project_percentage * 100 & "%" 'Display CA components
         grpResult.Text = "Module Result (CA:" & CA_percentage * 100 & "%, Exam:" & Exam_percentage * 100 & "%)" 'Add module components to groupbox
+        lblAverage.Text = ""
+        lblNumberofStudent.Text = ""
     End Sub
 
     Private Sub btnConfirm_Click(sender As Object, e As EventArgs) Handles btnConfirm.Click 'Actions when click confirm button
 
         Dim name As String
-        Dim test, quiz, project, exam, camrak, modulemark As Double
+        Dim test, quiz, project, exam, camark, modulemark As Double
         Dim valid_input As Integer '5 = invalid name 4 = valid 0-3 = invalid numbers
 
         If (txtName.Text = "") Or IsNumeric(txtName.Text) Then 'Check student name which is cannot be empty and a number
@@ -28,7 +30,7 @@
         ElseIf (IsNumeric(txtTest.Text)) And (IsNumeric(txtQuizzes.Text)) And (IsNumeric(txtProject.Text)) And (IsNumeric(txtExam.Text)) Then 'Check marks input  
             name = txtName.Text 'Input Name
             test = CDbl(txtTest.Text)
-            valid_input = Validate_marks(test) 'count numbers of valid marks input
+            valid_input = Validate_marks(test) 'Count numbers of valid marks input
             quiz = CDbl(txtQuizzes.Text) 'Input Quizzes mark
             valid_input = valid_input + Validate_marks(quiz)
             project = CDbl(txtProject.Text) 'Input Project mark
@@ -42,19 +44,12 @@
         End If
 
         If valid_input = 4 Then 'If there are 4 valid input, calculate the result
-            camrak = test * Test_percentage + quiz * Quiz_percentage + project * Project_percentage
-            modulemark = camrak * CA_percentage + exam * Exam_percentage
-            txtCA.Text = CStr(camrak)
-            txtModule.Text = CStr(modulemark)
-            If ((camrak < 40) Or (exam < 40)) Then 'Determine Grade
-                txtGrade.Text = "F"
-            ElseIf modulemark < 65 Then
-                txtGrade.Text = "C"
-            ElseIf modulemark < 75 Then
-                txtGrade.Text = "B"
-            Else
-                txtGrade.Text = "A"
-            End If
+            camark = test * Test_percentage + quiz * Quiz_percentage + project * Project_percentage 'Calculate CA Result
+            modulemark = camark * CA_percentage + exam * Exam_percentage 'Calculate Module Result
+            txtCA.Text = CStr(camark) 'Output CA Result
+            txtModule.Text = CStr(modulemark) 'Output Module Result
+            txtGrade.Text = Determine_Grade(camark, exam, modulemark) 'Output Grade
+            txtRemarks.Text = Determine_Remarks(txtGrade.Text, modulemark) 'Output Remarks
         ElseIf valid_input < 4 Then 'If there are any invalid numbers, display error message 
             MessageBox.Show("Please Enter marks in between 0 - 100", "Invalid Input")
             Clear_Output()
@@ -114,6 +109,32 @@
         Else
             Return 0
         End If
+    End Function
+
+    Function Determine_Grade(ByVal camark As Double, ByVal exam As Double, ByVal modulemark As Double) As String 'Determine Grade
+        Dim grade As String
+        If ((camark < 40) Or (exam < 40)) Then
+            grade = "F"
+        ElseIf modulemark < 65 Then
+            grade = "C"
+        ElseIf modulemark < 75 Then
+            grade = "B"
+        Else
+            grade = "A"
+        End If
+        Return grade
+    End Function
+
+    Function Determine_Remarks(ByVal grade As String, ByVal ModuleMarks As Double) As String 'Determine Remarks
+        Dim remarks As String
+        If grade = "F" And ModuleMarks < 30 Then
+            remarks = "Restudy"
+        ElseIf grade = "F" And ModuleMarks >= 30 Then
+            remarks = "Resit Exam"
+        Else
+            remarks = "Pass"
+        End If
+        Return remarks
     End Function
 
 End Class

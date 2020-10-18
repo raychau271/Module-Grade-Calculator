@@ -29,6 +29,9 @@ Partial Class frmModuleGradeCalculator
         Me.btnClose = New System.Windows.Forms.Button()
         Me.pnlOutput = New System.Windows.Forms.Panel()
         Me.grpStatistics = New System.Windows.Forms.GroupBox()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.lblGradeCount = New System.Windows.Forms.Label()
         Me.grpStudentGrade = New System.Windows.Forms.GroupBox()
         Me.btnClearAll = New System.Windows.Forms.Button()
         Me.grpResult = New System.Windows.Forms.GroupBox()
@@ -57,9 +60,15 @@ Partial Class frmModuleGradeCalculator
         Me.btnFind = New System.Windows.Forms.Button()
         Me.txtFindName = New System.Windows.Forms.TextBox()
         Me.lstRecord = New System.Windows.Forms.ListBox()
+        Me.lblShowNumberofStudent = New System.Windows.Forms.Label()
+        Me.lblShowAverage = New System.Windows.Forms.Label()
+        Me.lblNumberofStudent = New System.Windows.Forms.Label()
+        Me.lblAverage = New System.Windows.Forms.Label()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.pnlToolBar.SuspendLayout()
         CType(Me.picIcon, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlOutput.SuspendLayout()
+        Me.grpStatistics.SuspendLayout()
         Me.grpStudentGrade.SuspendLayout()
         Me.grpResult.SuspendLayout()
         Me.grpInput.SuspendLayout()
@@ -131,21 +140,59 @@ Partial Class frmModuleGradeCalculator
         '
         Me.pnlOutput.BackColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(118, Byte), Integer), CType(CType(143, Byte), Integer))
         Me.pnlOutput.Controls.Add(Me.grpStatistics)
-        Me.pnlOutput.Location = New System.Drawing.Point(0, 398)
+        Me.pnlOutput.Location = New System.Drawing.Point(0, 376)
         Me.pnlOutput.Name = "pnlOutput"
-        Me.pnlOutput.Size = New System.Drawing.Size(801, 201)
+        Me.pnlOutput.Size = New System.Drawing.Size(801, 223)
         Me.pnlOutput.TabIndex = 2
         '
         'grpStatistics
         '
+        Me.grpStatistics.Controls.Add(Me.Button1)
+        Me.grpStatistics.Controls.Add(Me.lblAverage)
+        Me.grpStatistics.Controls.Add(Me.lblNumberofStudent)
+        Me.grpStatistics.Controls.Add(Me.lblShowAverage)
+        Me.grpStatistics.Controls.Add(Me.lblShowNumberofStudent)
+        Me.grpStatistics.Controls.Add(Me.Label6)
+        Me.grpStatistics.Controls.Add(Me.Label5)
+        Me.grpStatistics.Controls.Add(Me.lblGradeCount)
         Me.grpStatistics.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.grpStatistics.ForeColor = System.Drawing.Color.Gold
         Me.grpStatistics.Location = New System.Drawing.Point(12, 3)
         Me.grpStatistics.Name = "grpStatistics"
-        Me.grpStatistics.Size = New System.Drawing.Size(776, 186)
+        Me.grpStatistics.Size = New System.Drawing.Size(776, 208)
         Me.grpStatistics.TabIndex = 0
         Me.grpStatistics.TabStop = False
         Me.grpStatistics.Text = "Module Statistics"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Segoe UI", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Location = New System.Drawing.Point(68, 118)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(51, 65)
+        Me.Label6.TabIndex = 26
+        Me.Label6.Text = "F"
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("Segoe UI", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Location = New System.Drawing.Point(68, 53)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(59, 65)
+        Me.Label5.TabIndex = 25
+        Me.Label5.Text = "A"
+        '
+        'lblGradeCount
+        '
+        Me.lblGradeCount.AutoSize = True
+        Me.lblGradeCount.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblGradeCount.Location = New System.Drawing.Point(53, 21)
+        Me.lblGradeCount.Name = "lblGradeCount"
+        Me.lblGradeCount.Size = New System.Drawing.Size(179, 32)
+        Me.lblGradeCount.TabIndex = 19
+        Me.lblGradeCount.Text = "Count of Grade"
         '
         'grpStudentGrade
         '
@@ -158,14 +205,14 @@ Partial Class frmModuleGradeCalculator
         Me.grpStudentGrade.ForeColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(118, Byte), Integer), CType(CType(143, Byte), Integer))
         Me.grpStudentGrade.Location = New System.Drawing.Point(12, 41)
         Me.grpStudentGrade.Name = "grpStudentGrade"
-        Me.grpStudentGrade.Size = New System.Drawing.Size(498, 351)
+        Me.grpStudentGrade.Size = New System.Drawing.Size(498, 329)
         Me.grpStudentGrade.TabIndex = 3
         Me.grpStudentGrade.TabStop = False
         Me.grpStudentGrade.Text = "Marks and Grade for Individual Student"
         '
         'btnClearAll
         '
-        Me.btnClearAll.Location = New System.Drawing.Point(408, 33)
+        Me.btnClearAll.Location = New System.Drawing.Point(408, 21)
         Me.btnClearAll.Name = "btnClearAll"
         Me.btnClearAll.Size = New System.Drawing.Size(78, 29)
         Me.btnClearAll.TabIndex = 11
@@ -183,7 +230,7 @@ Partial Class frmModuleGradeCalculator
         Me.grpResult.Controls.Add(Me.txtCA)
         Me.grpResult.Controls.Add(Me.lblCA)
         Me.grpResult.ForeColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(118, Byte), Integer), CType(CType(143, Byte), Integer))
-        Me.grpResult.Location = New System.Drawing.Point(6, 210)
+        Me.grpResult.Location = New System.Drawing.Point(6, 187)
         Me.grpResult.Name = "grpResult"
         Me.grpResult.Size = New System.Drawing.Size(486, 135)
         Me.grpResult.TabIndex = 4
@@ -271,9 +318,9 @@ Partial Class frmModuleGradeCalculator
         Me.grpInput.Controls.Add(Me.lblTest)
         Me.grpInput.Controls.Add(Me.btnConfirm)
         Me.grpInput.ForeColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(118, Byte), Integer), CType(CType(143, Byte), Integer))
-        Me.grpInput.Location = New System.Drawing.Point(6, 71)
+        Me.grpInput.Location = New System.Drawing.Point(6, 56)
         Me.grpInput.Name = "grpInput"
-        Me.grpInput.Size = New System.Drawing.Size(486, 133)
+        Me.grpInput.Size = New System.Drawing.Size(486, 125)
         Me.grpInput.TabIndex = 3
         Me.grpInput.TabStop = False
         Me.grpInput.Text = "Input CA and Exam Marks"
@@ -288,7 +335,7 @@ Partial Class frmModuleGradeCalculator
         '
         'txtExam
         '
-        Me.txtExam.Location = New System.Drawing.Point(257, 95)
+        Me.txtExam.Location = New System.Drawing.Point(257, 90)
         Me.txtExam.Name = "txtExam"
         Me.txtExam.Size = New System.Drawing.Size(100, 25)
         Me.txtExam.TabIndex = 10
@@ -296,7 +343,7 @@ Partial Class frmModuleGradeCalculator
         'lblExam
         '
         Me.lblExam.AutoSize = True
-        Me.lblExam.Location = New System.Drawing.Point(184, 98)
+        Me.lblExam.Location = New System.Drawing.Point(184, 93)
         Me.lblExam.Name = "lblExam"
         Me.lblExam.Size = New System.Drawing.Size(42, 17)
         Me.lblExam.TabIndex = 9
@@ -304,7 +351,7 @@ Partial Class frmModuleGradeCalculator
         '
         'txtProject
         '
-        Me.txtProject.Location = New System.Drawing.Point(73, 95)
+        Me.txtProject.Location = New System.Drawing.Point(73, 90)
         Me.txtProject.Name = "txtProject"
         Me.txtProject.Size = New System.Drawing.Size(100, 25)
         Me.txtProject.TabIndex = 8
@@ -312,7 +359,7 @@ Partial Class frmModuleGradeCalculator
         'lblProject
         '
         Me.lblProject.AutoSize = True
-        Me.lblProject.Location = New System.Drawing.Point(6, 98)
+        Me.lblProject.Location = New System.Drawing.Point(6, 93)
         Me.lblProject.Name = "lblProject"
         Me.lblProject.Size = New System.Drawing.Size(51, 17)
         Me.lblProject.TabIndex = 7
@@ -352,7 +399,7 @@ Partial Class frmModuleGradeCalculator
         '
         'btnConfirm
         '
-        Me.btnConfirm.Location = New System.Drawing.Point(402, 98)
+        Me.btnConfirm.Location = New System.Drawing.Point(402, 87)
         Me.btnConfirm.Name = "btnConfirm"
         Me.btnConfirm.Size = New System.Drawing.Size(78, 29)
         Me.btnConfirm.TabIndex = 2
@@ -361,7 +408,7 @@ Partial Class frmModuleGradeCalculator
         '
         'txtName
         '
-        Me.txtName.Location = New System.Drawing.Point(64, 36)
+        Me.txtName.Location = New System.Drawing.Point(64, 24)
         Me.txtName.Name = "txtName"
         Me.txtName.Size = New System.Drawing.Size(299, 25)
         Me.txtName.TabIndex = 1
@@ -369,7 +416,7 @@ Partial Class frmModuleGradeCalculator
         'lblName
         '
         Me.lblName.AutoSize = True
-        Me.lblName.Location = New System.Drawing.Point(6, 39)
+        Me.lblName.Location = New System.Drawing.Point(6, 27)
         Me.lblName.Name = "lblName"
         Me.lblName.Size = New System.Drawing.Size(46, 17)
         Me.lblName.TabIndex = 0
@@ -384,14 +431,14 @@ Partial Class frmModuleGradeCalculator
         Me.grpRecord.ForeColor = System.Drawing.Color.FromArgb(CType(CType(28, Byte), Integer), CType(CType(118, Byte), Integer), CType(CType(143, Byte), Integer))
         Me.grpRecord.Location = New System.Drawing.Point(516, 41)
         Me.grpRecord.Name = "grpRecord"
-        Me.grpRecord.Size = New System.Drawing.Size(272, 351)
+        Me.grpRecord.Size = New System.Drawing.Size(272, 329)
         Me.grpRecord.TabIndex = 4
         Me.grpRecord.TabStop = False
         Me.grpRecord.Text = "Student Record"
         '
         'btnFind
         '
-        Me.btnFind.Location = New System.Drawing.Point(222, 319)
+        Me.btnFind.Location = New System.Drawing.Point(222, 297)
         Me.btnFind.Name = "btnFind"
         Me.btnFind.Size = New System.Drawing.Size(44, 26)
         Me.btnFind.TabIndex = 2
@@ -400,7 +447,7 @@ Partial Class frmModuleGradeCalculator
         '
         'txtFindName
         '
-        Me.txtFindName.Location = New System.Drawing.Point(6, 319)
+        Me.txtFindName.Location = New System.Drawing.Point(6, 297)
         Me.txtFindName.Name = "txtFindName"
         Me.txtFindName.Size = New System.Drawing.Size(210, 25)
         Me.txtFindName.TabIndex = 1
@@ -411,8 +458,61 @@ Partial Class frmModuleGradeCalculator
         Me.lstRecord.ItemHeight = 17
         Me.lstRecord.Location = New System.Drawing.Point(6, 24)
         Me.lstRecord.Name = "lstRecord"
-        Me.lstRecord.Size = New System.Drawing.Size(260, 259)
+        Me.lstRecord.Size = New System.Drawing.Size(260, 225)
         Me.lstRecord.TabIndex = 0
+        '
+        'lblShowNumberofStudent
+        '
+        Me.lblShowNumberofStudent.AutoSize = True
+        Me.lblShowNumberofStudent.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblShowNumberofStudent.Location = New System.Drawing.Point(254, 21)
+        Me.lblShowNumberofStudent.Name = "lblShowNumberofStudent"
+        Me.lblShowNumberofStudent.Size = New System.Drawing.Size(232, 32)
+        Me.lblShowNumberofStudent.TabIndex = 27
+        Me.lblShowNumberofStudent.Text = "Number of Students"
+        '
+        'lblShowAverage
+        '
+        Me.lblShowAverage.AutoSize = True
+        Me.lblShowAverage.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblShowAverage.Location = New System.Drawing.Point(508, 21)
+        Me.lblShowAverage.Name = "lblShowAverage"
+        Me.lblShowAverage.Size = New System.Drawing.Size(192, 32)
+        Me.lblShowAverage.TabIndex = 28
+        Me.lblShowAverage.Text = "Module Average"
+        '
+        'lblNumberofStudent
+        '
+        Me.lblNumberofStudent.AutoSize = True
+        Me.lblNumberofStudent.Font = New System.Drawing.Font("Segoe UI", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblNumberofStudent.Location = New System.Drawing.Point(322, 84)
+        Me.lblNumberofStudent.Name = "lblNumberofStudent"
+        Me.lblNumberofStudent.Size = New System.Drawing.Size(80, 65)
+        Me.lblNumberofStudent.TabIndex = 29
+        Me.lblNumberofStudent.Text = "99"
+        '
+        'lblAverage
+        '
+        Me.lblAverage.AutoSize = True
+        Me.lblAverage.Font = New System.Drawing.Font("Segoe UI", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblAverage.Location = New System.Drawing.Point(564, 84)
+        Me.lblAverage.Name = "lblAverage"
+        Me.lblAverage.Size = New System.Drawing.Size(80, 65)
+        Me.lblAverage.TabIndex = 30
+        Me.lblAverage.Text = "99"
+        '
+        'Button1
+        '
+        Me.Button1.BackColor = System.Drawing.Color.FromArgb(CType(CType(3, Byte), Integer), CType(CType(37, Byte), Integer), CType(CType(57, Byte), Integer))
+        Me.Button1.FlatAppearance.BorderSize = 0
+        Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Button1.Font = New System.Drawing.Font("Segoe UI", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button1.Location = New System.Drawing.Point(623, 170)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(147, 32)
+        Me.Button1.TabIndex = 31
+        Me.Button1.Text = "Show Statistics"
+        Me.Button1.UseVisualStyleBackColor = False
         '
         'frmModuleGradeCalculator
         '
@@ -431,6 +531,8 @@ Partial Class frmModuleGradeCalculator
         Me.pnlToolBar.PerformLayout()
         CType(Me.picIcon, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlOutput.ResumeLayout(False)
+        Me.grpStatistics.ResumeLayout(False)
+        Me.grpStatistics.PerformLayout()
         Me.grpStudentGrade.ResumeLayout(False)
         Me.grpStudentGrade.PerformLayout()
         Me.grpResult.ResumeLayout(False)
@@ -477,4 +579,12 @@ Partial Class frmModuleGradeCalculator
     Friend WithEvents lstRecord As ListBox
     Friend WithEvents btnClearAll As Button
     Friend WithEvents lblCAComponents As Label
+    Friend WithEvents Label5 As Label
+    Friend WithEvents lblGradeCount As Label
+    Friend WithEvents Label6 As Label
+    Friend WithEvents lblAverage As Label
+    Friend WithEvents lblNumberofStudent As Label
+    Friend WithEvents lblShowAverage As Label
+    Friend WithEvents lblShowNumberofStudent As Label
+    Friend WithEvents Button1 As Button
 End Class
