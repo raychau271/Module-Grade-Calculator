@@ -50,10 +50,30 @@
             txtModule.Text = CStr(modulemark) 'Output Module Result
             txtGrade.Text = Determine_Grade(camark, exam, modulemark) 'Output Grade
             txtRemarks.Text = Determine_Remarks(txtGrade.Text, modulemark) 'Output Remarks
+            lstRecord.Items.Add(name)
         ElseIf valid_input < 4 Then 'If there are any invalid numbers, display error message 
             MessageBox.Show("Please Enter marks in between 0 - 100", "Invalid Input")
             Clear_Output()
         End If
+    End Sub
+
+    Private Sub btnFind_Click(sender As Object, e As EventArgs) Handles btnFind.Click
+        Dim find_name As String = txtFindName.Text
+        Dim found As Boolean = False
+
+        For i = 0 To lstRecord.Items.Count - 1 Step 1
+            If find_name = lstRecord.Items(i) Then
+                Return
+                found = True
+                MessageBox.Show(find_name & " found on line " & i + 1, "Student Search")
+            End If
+        Next
+        If found = False Then
+            MessageBox.Show(find_name & "not found")
+        End If
+    End Sub
+
+    Private Sub btnStatistic_Click(sender As Object, e As EventArgs) Handles btnStatistic.Click
 
     End Sub
 
