@@ -1,10 +1,14 @@
 ﻿Public Class frmModuleGradeCalculator
-
     Const Test_percentage As Double = 0.5
     Const Quiz_percentage As Double = 0.2
     Const Project_percentage As Double = 0.3
     Const CA_percentage As Double = 0.4
     Const Exam_percentage As Double = 0.6
+
+    Dim count_A As Integer
+    Dim count_F As Integer
+    Dim count_student As Integer
+    Dim sum_marks As Double
 
     Dim drag As Boolean
     Dim mousex As Integer
@@ -16,10 +20,11 @@
         grpResult.Text = "Module Result (CA:" & CA_percentage * 100 & "%, Exam:" & Exam_percentage * 100 & "%)" 'Add module components to groupbox
         lblAverage.Text = ""
         lblNumberofStudent.Text = ""
+        lblCountA.Text = ""
+        lblCountF.Text = ""
     End Sub
 
     Private Sub btnConfirm_Click(sender As Object, e As EventArgs) Handles btnConfirm.Click 'Actions when click confirm button
-
         Dim name As String
         Dim test, quiz, project, exam, camark, modulemark As Double
         Dim valid_input As Integer '5 = invalid name 4 = valid 0-3 = invalid numbers
@@ -50,6 +55,13 @@
             txtModule.Text = CStr(modulemark) 'Output Module Result
             txtGrade.Text = Determine_Grade(camark, exam, modulemark) 'Output Grade
             txtRemarks.Text = Determine_Remarks(txtGrade.Text, modulemark) 'Output Remarks
+            count_student += 1
+            sum_marks += modulemark
+            If txtGrade.Text = "A" Then
+                count_A += 1
+            ElseIf txtGrade.Text = "F" Then
+                count_F += 1
+            End If
             lstRecord.Items.Add(name)
         ElseIf valid_input < 4 Then 'If there are any invalid numbers, display error message 
             MessageBox.Show("Please Enter marks in between 0 - 100", "Invalid Input")
@@ -74,7 +86,14 @@
     End Sub
 
     Private Sub btnStatistic_Click(sender As Object, e As EventArgs) Handles btnStatistic.Click
-
+        If count_student = 0 Then
+            MessageBox.Show("No student records", "Error")
+            Return
+        End If
+        lblNumberofStudent.Text = CStr(count_student)
+        lblAverage.Text = CStr(sum_marks / count_student)
+        lblCountA.Text = CStr(count_A)
+        lblCountF.Text = CStr(count_F)
     End Sub
 
     Private Sub btnClearAll_Click(sender As Object, e As EventArgs) Handles btnClearAll.Click 'Clear everything in Marks and Grade for Individual Student groupbox
@@ -133,6 +152,7 @@
 
     Function Determine_Grade(ByVal camark As Double, ByVal exam As Double, ByVal modulemark As Double) As String 'Determine Grade
         Dim grade As String
+
         If ((camark < 40) Or (exam < 40)) Then
             grade = "F"
         ElseIf modulemark < 65 Then
@@ -147,6 +167,7 @@
 
     Function Determine_Remarks(ByVal grade As String, ByVal ModuleMarks As Double) As String 'Determine Remarks
         Dim remarks As String
+
         If grade = "F" And ModuleMarks < 30 Then
             remarks = "Restudy"
         ElseIf grade = "F" And ModuleMarks >= 30 Then
