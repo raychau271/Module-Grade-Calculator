@@ -75,13 +75,12 @@
 
         For i = 0 To lstRecord.Items.Count - 1 Step 1
             If find_name = lstRecord.Items(i) Then
-                Return
                 found = True
                 MessageBox.Show(find_name & " found on line " & i + 1, "Student Search")
             End If
         Next
         If found = False Then
-            MessageBox.Show(find_name & "not found")
+            MessageBox.Show(find_name & " not found")
         End If
     End Sub
 
