@@ -11,6 +11,11 @@ Public Class frmModuleGradeCalculator
     Dim count_student As Integer
     Dim sum_marks As Double
 
+    Const provider As String = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source="
+    Const dataFile As String = "C:\Users\200153308\source\repos\raychau271\Module-Grade-Calculator\student_record.accdb"
+    Const connString As String = provider & dataFile
+    Dim myConnection As OleDbConnection = New OleDbConnection
+
     Dim drag As Boolean
     Dim mousex As Integer
     Dim mousey As Integer
@@ -65,14 +70,6 @@ Public Class frmModuleGradeCalculator
             End If
             lstRecord.Items.Add(name)
 
-            Dim provider As String
-            Dim dataFile As String
-            Dim connString As String
-            Dim myConnection As OleDbConnection = New OleDbConnection
-
-            provider = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source="
-            dataFile = "C:\Users\200153308\source\repos\raychau271\Module-Grade-Calculator\student_record.accdb"
-            connString = provider & dataFile
             myConnection.ConnectionString = connString
             myConnection.Open()
 
@@ -101,6 +98,32 @@ Public Class frmModuleGradeCalculator
             MessageBox.Show("Please Enter marks in between 0 - 100", "Invalid Input")
             Clear_Output()
         End If
+    End Sub
+
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
+        myConnection.ConnectionString = connString
+        myConnection.Open()
+
+        Dim get_record As String
+        get_record = "Select * FROM student WHERE Name = '" & txtFindName.Text & "'"
+        Dim cmd As OleDbCommand = New OleDbCommand(get_record, myConnection)
+        Dim record As OleDbDataReader
+
+        record = cmd.ExecuteReader
+        record.Read()
+
+        MessageBox.Show("Name: " & record(1) & Environment.NewLine _
+                        & "Test: " & record(2) & Environment.NewLine _
+                        & "Quizzes: " & record(3) & Environment.NewLine _
+                        & "Project: " & record(4) & Environment.NewLine _
+                        & "Exam: " & record(5) & Environment.NewLine _
+                        & "CA Marks: " & record(6) & Environment.NewLine _
+                        & "Module Marks: " & record(7) & Environment.NewLine _
+                        & "Grade: " & record(8) & Environment.NewLine _
+                        & "Remarks: " & record(9), "Record")
+
+        myConnection.Close()
+
     End Sub
 
     Private Sub btnFind_Click(sender As Object, e As EventArgs) Handles btnFind.Click
