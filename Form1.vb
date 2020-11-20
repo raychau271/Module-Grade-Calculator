@@ -12,7 +12,7 @@ Public Class frmModuleGradeCalculator
     Dim sum_marks As Double
 
     Const provider As String = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source="
-    Const dataFile As String = "C:\Users\200153308\source\repos\raychau271\Module-Grade-Calculator\student_record.accdb"
+    Const dataFile As String = "C:\Users\Raymond Chau\Desktop\VB\Module Grade Calculator\student_record.accdb"
     Const connString As String = provider & dataFile
     Dim myConnection As OleDbConnection = New OleDbConnection
 
@@ -28,6 +28,24 @@ Public Class frmModuleGradeCalculator
         lblNumberofStudent.Text = ""
         lblCountA.Text = ""
         lblCountF.Text = ""
+
+        myConnection.ConnectionString = connString
+        myConnection.Open()
+
+        Dim get_record As String
+        get_record = "Select Name FROM student"
+        Dim cmd As OleDbCommand = New OleDbCommand(get_record, myConnection)
+        Dim record As OleDbDataReader
+
+        record = cmd.ExecuteReader
+        record.Read()
+        If record.HasRows Then
+            lstRecord.Items.Add(record(0))
+        Else
+            Return
+        End If
+
+        myConnection.Close()
     End Sub
 
     Private Sub btnConfirm_Click(sender As Object, e As EventArgs) Handles btnConfirm.Click 'Actions when click confirm button
