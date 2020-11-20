@@ -1,4 +1,5 @@
-﻿Public Class frmModuleGradeCalculator
+﻿Imports System.Data.OleDb
+Public Class frmModuleGradeCalculator
     Const Test_percentage As Double = 0.5
     Const Quiz_percentage As Double = 0.2
     Const Project_percentage As Double = 0.3
@@ -63,6 +64,39 @@
                 count_F += 1
             End If
             lstRecord.Items.Add(name)
+
+            Dim provider As String
+            Dim dataFile As String
+            Dim connString As String
+            Dim myConnection As OleDbConnection = New OleDbConnection
+
+            provider = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source="
+            dataFile = "C:\Users\200153308\source\repos\raychau271\Module-Grade-Calculator\student_record.accdb"
+            connString = provider & dataFile
+            myConnection.ConnectionString = connString
+            myConnection.Open()
+
+            Dim Insert_Data As String
+            Insert_Data = "Insert into student([Name],[Test],[Quizzes],[Project],[Exam],[CA_Marks],[Module_Marks],[Grade],[Remarks]) Values (?,?,?,?,?,?,?,?,?)"
+            Dim cmd As OleDbCommand = New OleDbCommand(Insert_Data, myConnection)
+            cmd.Parameters.Add(New OleDbParameter("Name", CType(name, String)))
+            cmd.Parameters.Add(New OleDbParameter("Test", CType(test, Double)))
+            cmd.Parameters.Add(New OleDbParameter("Quizzes", CType(quiz, Double)))
+            cmd.Parameters.Add(New OleDbParameter("Project", CType(project, Double)))
+            cmd.Parameters.Add(New OleDbParameter("Exam", CType(exam, Double)))
+            cmd.Parameters.Add(New OleDbParameter("CA_Marks", CType(camark, Double)))
+            cmd.Parameters.Add(New OleDbParameter("Module_Marks", CType(modulemark, Double)))
+            cmd.Parameters.Add(New OleDbParameter("Grade", CType(txtGrade.Text, String)))
+            cmd.Parameters.Add(New OleDbParameter("Remarks", CType(txtRemarks.Text, String)))
+
+            Try
+                cmd.ExecuteNonQuery()
+                cmd.Dispose()
+                myConnection.Close()
+            Catch ex As Exception
+
+            End Try
+
         ElseIf valid_input < 4 Then 'If there are any invalid numbers, display error message 
             MessageBox.Show("Please Enter marks in between 0 - 100", "Invalid Input")
             Clear_Output()

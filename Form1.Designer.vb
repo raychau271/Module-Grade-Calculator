@@ -29,6 +29,7 @@ Partial Class frmModuleGradeCalculator
         Me.btnClose = New System.Windows.Forms.Button()
         Me.pnlOutput = New System.Windows.Forms.Panel()
         Me.grpStatistics = New System.Windows.Forms.GroupBox()
+        Me.lblGradeF = New System.Windows.Forms.Label()
         Me.btnStatistic = New System.Windows.Forms.Button()
         Me.lblAverage = New System.Windows.Forms.Label()
         Me.lblNumberofStudent = New System.Windows.Forms.Label()
@@ -66,7 +67,6 @@ Partial Class frmModuleGradeCalculator
         Me.btnFind = New System.Windows.Forms.Button()
         Me.txtFindName = New System.Windows.Forms.TextBox()
         Me.lstRecord = New System.Windows.Forms.ListBox()
-        Me.lblGradeF = New System.Windows.Forms.Label()
         Me.pnlToolBar.SuspendLayout()
         CType(Me.picIcon, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlOutput.SuspendLayout()
@@ -166,6 +166,16 @@ Partial Class frmModuleGradeCalculator
         Me.grpStatistics.TabIndex = 0
         Me.grpStatistics.TabStop = False
         Me.grpStatistics.Text = "Module Statistics"
+        '
+        'lblGradeF
+        '
+        Me.lblGradeF.AutoSize = True
+        Me.lblGradeF.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblGradeF.Location = New System.Drawing.Point(156, 21)
+        Me.lblGradeF.Name = "lblGradeF"
+        Me.lblGradeF.Size = New System.Drawing.Size(128, 32)
+        Me.lblGradeF.TabIndex = 32
+        Me.lblGradeF.Text = "Count of F"
         '
         'btnStatistic
         '
@@ -386,8 +396,9 @@ Partial Class frmModuleGradeCalculator
         Me.lblCAComponents.AutoSize = True
         Me.lblCAComponents.Location = New System.Drawing.Point(11, 21)
         Me.lblCAComponents.Name = "lblCAComponents"
-        Me.lblCAComponents.Size = New System.Drawing.Size(0, 17)
+        Me.lblCAComponents.Size = New System.Drawing.Size(105, 17)
         Me.lblCAComponents.TabIndex = 11
+        Me.lblCAComponents.Text = "CA Components:"
         '
         'txtExam
         '
@@ -526,16 +537,6 @@ Partial Class frmModuleGradeCalculator
         Me.lstRecord.Name = "lstRecord"
         Me.lstRecord.Size = New System.Drawing.Size(260, 225)
         Me.lstRecord.TabIndex = 0
-        '
-        'lblGradeF
-        '
-        Me.lblGradeF.AutoSize = True
-        Me.lblGradeF.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblGradeF.Location = New System.Drawing.Point(156, 21)
-        Me.lblGradeF.Name = "lblGradeF"
-        Me.lblGradeF.Size = New System.Drawing.Size(128, 32)
-        Me.lblGradeF.TabIndex = 32
-        Me.lblGradeF.Text = "Count of F"
         '
         'frmModuleGradeCalculator
         '
