@@ -194,11 +194,13 @@ Partial Class frmModuleGradeCalculator
         '
         Me.lblAverage.AutoSize = True
         Me.lblAverage.Font = New System.Drawing.Font("Segoe UI", 36.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblAverage.Location = New System.Drawing.Point(587, 84)
+        Me.lblAverage.Location = New System.Drawing.Point(571, 84)
         Me.lblAverage.Name = "lblAverage"
+        Me.lblAverage.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.lblAverage.Size = New System.Drawing.Size(80, 65)
         Me.lblAverage.TabIndex = 30
         Me.lblAverage.Text = "99"
+        Me.lblAverage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'lblNumberofStudent
         '

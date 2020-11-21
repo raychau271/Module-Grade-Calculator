@@ -1,5 +1,10 @@
 ﻿Imports System.Data.OleDb
 Public Class frmModuleGradeCalculator
+    Const provider As String = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source="
+    Const dataFile As String = "C:\Users\Raymond Chau\Desktop\VB\Module Grade Calculator\student_record.accdb"
+    Const connString As String = provider & dataFile
+    Dim myConnection As OleDbConnection = New OleDbConnection
+
     Const Test_percentage As Double = 0.5
     Const Quiz_percentage As Double = 0.2
     Const Project_percentage As Double = 0.3
@@ -11,13 +16,8 @@ Public Class frmModuleGradeCalculator
     Dim count_student As Integer
     Dim sum_marks As Double
 
-    Const provider As String = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source="
-    Const dataFile As String = "C:\Users\Raymond Chau\Desktop\VB\Module Grade Calculator\student_record.accdb"
-    Const connString As String = provider & dataFile
-    Dim myConnection As OleDbConnection = New OleDbConnection
-
-    Dim drag As Boolean
-    Dim mousex As Integer
+    Dim drag As Boolean 'Mouse down/release
+    Dim mousex As Integer 'Mouse position
     Dim mousey As Integer
 
     Private Sub frmModuleGradeCalculator_Load(sender As Object, e As EventArgs) Handles MyBase.Load 'Actions when the program started
@@ -29,23 +29,19 @@ Public Class frmModuleGradeCalculator
         lblCountA.Text = ""
         lblCountF.Text = ""
 
-        myConnection.ConnectionString = connString
+        myConnection.ConnectionString = connString 'Connect to Database 
         myConnection.Open()
 
-        Dim get_record As String
-        get_record = "Select Name FROM student"
-        Dim cmd As OleDbCommand = New OleDbCommand(get_record, myConnection)
+        Dim query_Name As String = "Select Name FROM student" 'Declare SQL statement
+        Dim cmd As OleDbCommand = New OleDbCommand(query_Name, myConnection)
         Dim record As OleDbDataReader
 
         record = cmd.ExecuteReader
-        record.Read()
-        If record.HasRows Then
-            lstRecord.Items.Add(record(0))
-        Else
-            Return
-        End If
+        Do While (record.Read()) 'Read record from database until no record found
+            lstRecord.Items.Add(record(0)) 'Display stored record to listbox 
+        Loop
 
-        myConnection.Close()
+        myConnection.Close() 'Disconnect from database
     End Sub
 
     Private Sub btnConfirm_Click(sender As Object, e As EventArgs) Handles btnConfirm.Click 'Actions when click confirm button
@@ -54,7 +50,7 @@ Public Class frmModuleGradeCalculator
         Dim valid_input As Integer '5 = invalid name 4 = valid 0-3 = invalid numbers
 
         If (txtName.Text = "") Or IsNumeric(txtName.Text) Then 'Check student name which is cannot be empty and a number
-            MessageBox.Show("Please Enter Student Name", "Invalid Input")
+            MessageBox.Show("Please Enter a Valid Student Name", "Invalid Input")
             valid_input = 5
         ElseIf (IsNumeric(txtTest.Text)) And (IsNumeric(txtQuizzes.Text)) And (IsNumeric(txtProject.Text)) And (IsNumeric(txtExam.Text)) Then 'Check marks input  
             name = txtName.Text 'Input Name
@@ -67,7 +63,7 @@ Public Class frmModuleGradeCalculator
             exam = CDbl(txtExam.Text) 'Input Exam mark
             valid_input = valid_input + Validate_marks(exam)
         Else
-            MessageBox.Show("Please Enter a number", "Invalid Input")
+            MessageBox.Show("Please Enter Valid Number", "Invalid Input")
             valid_input = 5 'to prevent error message display wrongly
             Clear_Output()
         End If
@@ -79,20 +75,20 @@ Public Class frmModuleGradeCalculator
             txtModule.Text = CStr(modulemark) 'Output Module Result
             txtGrade.Text = Determine_Grade(camark, exam, modulemark) 'Output Grade
             txtRemarks.Text = Determine_Remarks(txtGrade.Text, modulemark) 'Output Remarks
-            count_student += 1
-            sum_marks += modulemark
-            If txtGrade.Text = "A" Then
+            count_student += 1 'Accumulate number of student
+            sum_marks += modulemark 'Accumulate totel marks
+            If txtGrade.Text = "A" Then 'Accumulate count of A/F
                 count_A += 1
             ElseIf txtGrade.Text = "F" Then
                 count_F += 1
             End If
-            lstRecord.Items.Add(name)
+            lstRecord.Items.Add(name) 'Add student name to listbox
 
-            myConnection.ConnectionString = connString
+            myConnection.ConnectionString = connString 'Connect to Database
             myConnection.Open()
 
-            Dim Insert_Data As String
-            Insert_Data = "Insert into student([Name],[Test],[Quizzes],[Project],[Exam],[CA_Marks],[Module_Marks],[Grade],[Remarks]) Values (?,?,?,?,?,?,?,?,?)"
+            Dim Insert_Data As String 'Declare SQL statement
+            Insert_Data = "INSERT INTO student([Name],[Test],[Quizzes],[Project],[Exam],[CA_Marks],[Module_Marks],[Grade],[Remarks]) Values (?,?,?,?,?,?,?,?,?)"
             Dim cmd As OleDbCommand = New OleDbCommand(Insert_Data, myConnection)
             cmd.Parameters.Add(New OleDbParameter("Name", CType(name, String)))
             cmd.Parameters.Add(New OleDbParameter("Test", CType(test, Double)))
@@ -104,13 +100,9 @@ Public Class frmModuleGradeCalculator
             cmd.Parameters.Add(New OleDbParameter("Grade", CType(txtGrade.Text, String)))
             cmd.Parameters.Add(New OleDbParameter("Remarks", CType(txtRemarks.Text, String)))
 
-            Try
-                cmd.ExecuteNonQuery()
-                cmd.Dispose()
-                myConnection.Close()
-            Catch ex As Exception
-
-            End Try
+            cmd.ExecuteNonQuery() 'Use for add, update, delete record
+            cmd.Dispose()
+            myConnection.Close() 'Disconncet from database
 
         ElseIf valid_input < 4 Then 'If there are any invalid numbers, display error message 
             MessageBox.Show("Please Enter marks in between 0 - 100", "Invalid Input")
@@ -119,18 +111,19 @@ Public Class frmModuleGradeCalculator
     End Sub
 
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
-        myConnection.ConnectionString = connString
+        myConnection.ConnectionString = connString 'Connect to database
         myConnection.Open()
 
-        Dim get_record As String
-        get_record = "Select * FROM student WHERE Name = '" & txtFindName.Text & "'"
-        Dim cmd As OleDbCommand = New OleDbCommand(get_record, myConnection)
+        Dim query_record As String
+        query_record = "Select * FROM student WHERE Name = '" & txtFindName.Text & "'" 'Declare SQL statement
+        Dim cmd As OleDbCommand = New OleDbCommand(query_record, myConnection)
         Dim record As OleDbDataReader
 
         record = cmd.ExecuteReader
-        record.Read()
+        record.Read() 'Read record from database
 
-        MessageBox.Show("Name: " & record(1) & Environment.NewLine _
+        If record.HasRows Then 'If found record 
+            MessageBox.Show("Name: " & record(1) & Environment.NewLine _
                         & "Test: " & record(2) & Environment.NewLine _
                         & "Quizzes: " & record(3) & Environment.NewLine _
                         & "Project: " & record(4) & Environment.NewLine _
@@ -138,36 +131,78 @@ Public Class frmModuleGradeCalculator
                         & "CA Marks: " & record(6) & Environment.NewLine _
                         & "Module Marks: " & record(7) & Environment.NewLine _
                         & "Grade: " & record(8) & Environment.NewLine _
-                        & "Remarks: " & record(9), "Record")
+                        & "Remarks: " & record(9), "Student Record")
+        ElseIf txtFindName.Text = "" Then 'Display error message when there is no input
+            MessageBox.Show("Please Enter a Student Name", "Invalid Input")
+        Else 'Display error meaasge when record not found
+            MessageBox.Show(txtFindName.Text & " Not Found", "Error")
+        End If
 
-        myConnection.Close()
-
+        myConnection.Close() 'Disconnect from database
     End Sub
 
     Private Sub btnFind_Click(sender As Object, e As EventArgs) Handles btnFind.Click
-        Dim find_name As String = txtFindName.Text
-        Dim found As Boolean = False
+        Dim find_name As String = txtFindName.Text 'Store student name to a variable
+        Dim found As Boolean = False 'Default record not found
 
-        For i = 0 To lstRecord.Items.Count - 1 Step 1
-            If find_name = lstRecord.Items(i) Then
+        For i = 0 To lstRecord.Items.Count - 1 Step 1 'Search Student Name in listbox
+            If find_name.Trim = lstRecord.Items(i) Then
                 found = True
-                MessageBox.Show(find_name & " found on line " & i + 1, "Student Search")
+                MessageBox.Show(find_name & " Found on Line " & i + 1, "Student Record")
             End If
         Next
-        If found = False Then
-            MessageBox.Show(find_name & " not found")
+
+        If txtFindName.Text = "" Then 'Display Error Message while there is no input or no such record
+            MessageBox.Show("Please Enter a Student Name", "Invalid Input")
+        ElseIf found = False Then
+            MessageBox.Show(find_name & " Not Found", "Error")
         End If
     End Sub
 
     Private Sub btnStatistic_Click(sender As Object, e As EventArgs) Handles btnStatistic.Click
-        If count_student = 0 Then
-            MessageBox.Show("No student records", "Error")
-            Return
-        End If
-        lblNumberofStudent.Text = CStr(count_student)
-        lblAverage.Text = CStr(sum_marks / count_student)
-        lblCountA.Text = CStr(count_A)
-        lblCountF.Text = CStr(count_F)
+        myConnection.ConnectionString = connString 'Connect to Database
+        myConnection.Open()
+
+        Dim query_countA As String = "SELECT COUNT(Grade) FROM student WHERE Grade = 'A'" 'Declare SQL Statement for counting numbers of student that have Grade A
+        Dim cmdA As OleDbCommand = New OleDbCommand(query_countA, myConnection)
+        Dim countA As OleDbDataReader
+
+        countA = cmdA.ExecuteReader
+        countA.Read() 'Read record from database
+        lblCountA.Text = countA(0) 'Display record
+
+        Dim query_countF As String = "SELECT COUNT(Grade) FROM student WHERE Grade = 'F'" 'Declare SQL Statement for counting numbers of student that have Grade A
+        Dim cmdF As OleDbCommand = New OleDbCommand(query_countF, myConnection)
+        Dim countF As OleDbDataReader
+
+        countF = cmdF.ExecuteReader
+        countF.Read() 'Read record from database
+        lblCountF.Text = countF(0) 'Display record
+
+        Dim query_countStu As String = "SELECT COUNT(ID) FROM student" 'Declare SQL Statement for counting numbers of record(s) each record represent one student
+        Dim cmdStu As OleDbCommand = New OleDbCommand(query_countStu, myConnection)
+        Dim countStu As OleDbDataReader
+
+        countStu = cmdStu.ExecuteReader
+        countStu.Read() 'Read record from database
+        lblNumberofStudent.Text = countStu(0) 'Display record
+
+        Dim query_Avg As String = "SELECT AVG(Module_Marks) FROM student"
+        Dim cmdAvg As OleDbCommand = New OleDbCommand(query_Avg, myConnection)
+        Dim Avg As OleDbDataReader
+
+        Avg = cmdAvg.ExecuteReader
+        Avg.Read() 'Read record from database
+
+        Try 'Disconnect from database when there is a Null
+            lblAverage.Text = Math.Round(Avg(0), 2) 'Display record and round up to 2 d.p.
+            cmdAvg.Dispose()
+            myConnection.Close() 'Disconnect from database
+        Catch ex As Exception
+            lblAverage.Text = "0" 'When the record is null than display 0 as average
+        End Try
+
+        myConnection.Close() 'disconnect from database
     End Sub
 
     Private Sub btnClearAll_Click(sender As Object, e As EventArgs) Handles btnClearAll.Click 'Clear everything in Marks and Grade for Individual Student groupbox
