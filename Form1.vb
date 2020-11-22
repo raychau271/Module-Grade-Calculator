@@ -1,5 +1,13 @@
-﻿Imports System.Data.OleDb
+﻿'Imports System.IO
+Imports System.Data.OleDb
+
 Public Class frmModuleGradeCalculator
+    'Const provider As String = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source="
+    'Dim filepath As String = Directory.GetCurrentDirectory
+    'Dim dataFile As String = filepath & "\student_record.accdb"
+    'Dim connString As String = provider & dataFile
+    'Dim myConnection As OleDbConnection = New OleDbConnection
+
     Const provider As String = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source="
     Const dataFile As String = "C:\Users\Raymond Chau\Desktop\VB\Module Grade Calculator\student_record.accdb"
     Const connString As String = provider & dataFile
@@ -75,6 +83,7 @@ Public Class frmModuleGradeCalculator
             txtModule.Text = CStr(modulemark) 'Output Module Result
             txtGrade.Text = Determine_Grade(camark, exam, modulemark) 'Output Grade
             txtRemarks.Text = Determine_Remarks(txtGrade.Text, modulemark) 'Output Remarks
+
             count_student += 1 'Accumulate number of student
             sum_marks += modulemark 'Accumulate totel marks
             If txtGrade.Text = "A" Then 'Accumulate count of A/F
@@ -110,7 +119,7 @@ Public Class frmModuleGradeCalculator
         End If
     End Sub
 
-    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click 'Search Student record
         myConnection.ConnectionString = connString 'Connect to database
         myConnection.Open()
 
@@ -132,7 +141,7 @@ Public Class frmModuleGradeCalculator
                         & "Module Marks: " & record(7) & Environment.NewLine _
                         & "Grade: " & record(8) & Environment.NewLine _
                         & "Remarks: " & record(9), "Student Record")
-        ElseIf txtFindName.Text = "" Then 'Display error message when there is no input
+        ElseIf txtFindName.Text = "" Or IsNumeric(txtFindName.Text) Then 'Display error message when there is no input
             MessageBox.Show("Please Enter a Student Name", "Invalid Input")
         Else 'Display error meaasge when record not found
             MessageBox.Show(txtFindName.Text & " Not Found", "Error")
@@ -152,7 +161,7 @@ Public Class frmModuleGradeCalculator
             End If
         Next
 
-        If txtFindName.Text = "" Then 'Display Error Message while there is no input or no such record
+        If txtFindName.Text = "" Or IsNumeric(txtFindName.Text) Then 'Display Error Message while there is no input or no such record
             MessageBox.Show("Please Enter a Student Name", "Invalid Input")
         ElseIf found = False Then
             MessageBox.Show(find_name & " Not Found", "Error")
